@@ -15,7 +15,7 @@ public class Album {
     private String nombre;
     private String genero;
     private String año;
-    private String imagen;
+    private String imagenArchiv;
     private ArrayList<Cancion> canciones;
     private ArrayList<Artista> artistas;
     private ArrayList<Usuario> usuarios;
@@ -37,8 +37,8 @@ public class Album {
         this.año = año;
     }
     
-    public void setImagen(String imagen){
-        this.imagen= imagen;    
+    public void setImagenArchiv(String imagen){
+        this.imagenArchiv= imagen;    
     }
 
     public String getNombre() {
@@ -53,8 +53,8 @@ public class Album {
         return año;
     }
 
-    public String getImagen() {
-        return imagen;
+    public String getImagenArchiv() {
+        return imagenArchiv;
     }
 
     public ArrayList<Cancion> getCanciones() {
