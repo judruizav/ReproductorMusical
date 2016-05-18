@@ -8,7 +8,8 @@ package Modelo;
 import Modelo.exception.BuscarException;
 import Modelo.exception.PlaylistException;
 import Modelo.exception.UsuarioException;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.net.*;
 import java.util.ArrayList;
 
 /**
@@ -35,19 +36,17 @@ public class Servicio {
         
     }
     
-    public Album buscarAlbum(String nombre) throws BuscarException{
+    public Album buscarAlbum(String nombre){
       Album albumEncontrado= null;
       for(int i=0; i<this.reproductorMusical.getAlbumes().size(); i++){
         if(this.reproductorMusical.getAlbumes().get(i).getNombre().equals(nombre)){
           albumEncontrado= this.reproductorMusical.getAlbumes().get(i);    
         }    
       }
-      if(albumEncontrado==null)
-          throw new BuscarException("El album no existe");
       return albumEncontrado;          
     }
     
-    public Cancion buscarCancion(String nombre) throws BuscarException{
+    public Cancion buscarCancion(String nombre){
       Cancion cancionEncontrada= null;
       for(int i=0; i<this.reproductorMusical.getAlbumes().size(); i++){
         for(int j=0; j<this.reproductorMusical.getAlbumes().get(i).getCanciones().size(); j++){
@@ -56,9 +55,6 @@ public class Servicio {
             cancionEncontrada= this.reproductorMusical.getAlbumes().get(i).getCanciones().get(j);      
           }
         }    
-      }
-      if(cancionEncontrada==null){
-          throw new BuscarException("La cancion no existe");
       }
       return cancionEncontrada;
     }
@@ -125,17 +121,73 @@ public class Servicio {
     }
     
     //URL cliente-servidor
-    public void completarInfoAlbum(){
-        
+    public void completarInfoAlbum(String direccion, Album album) throws IOException{
+      URL url= new URL(direccion);
+      InputStream is= null;
+      try{
+        URLConnection openConnection= url.openConnection();
+        is= openConnection.getInputStream();
+        InputStreamReader reader= new InputStreamReader(is);
+        BufferedReader bf= new BufferedReader(reader);
+        String temp;
+        while((temp= bf.readLine())!= null){
+            if(temp.contains("Genero")){
+                 
+            }
+        }
+      } catch(IOException ex){
+        System.out.println(ex.getMessage());       
+      }
+      if(is!=null){
+          is.close();
+      }
     }
     
-    public void completarInfoCancion(Cancion cancion){
-        
+    public void completarInfoCancion(String direccion, Cancion cancion) throws IOException{
+      URL url= new URL(direccion);
+      InputStream is= null;
+      try{
+        URLConnection openConnection= url.openConnection();
+        is= openConnection.getInputStream();
+        InputStreamReader reader= new InputStreamReader(is);
+        BufferedReader bf= new BufferedReader(reader);
+        String temp;
+        while((temp= bf.readLine())!= null){
+            if(temp.contains("Genero")){
+                 
+            }
+        }
+      } catch(IOException ex){
+        System.out.println(ex.getMessage());       
+      }
+      if(is!=null){
+          is.close();
+      }    
     }
     
-    
-    
-
-    
-
+    public void obtenerLetra(String direccion, Cancion cancion) throws IOException{
+      URL url= new URL(direccion);
+      InputStream is= null;
+      FileWriter fw= null;
+      try{
+        URLConnection openConnection= url.openConnection();
+        is= openConnection.getInputStream();
+        InputStreamReader reader= new InputStreamReader(is);
+        BufferedReader bf= new BufferedReader(reader);
+        fw= new FileWriter(new File(cancion.getNombre() + " Letra"));
+        String temp;
+        while((temp= bf.readLine())!= null){
+            temp= bf.readLine();
+            fw.write(temp);
+        }
+      } catch(IOException ex){
+        System.out.println(ex.getMessage());       
+      }
+      if(is!=null){
+          is.close();
+      }
+      if(fw!= null){
+          fw.close();
+      }
+    }
 }
