@@ -165,8 +165,21 @@ public class Servicio {
       }    
     }
     
+    //Letra cancion
+    public String urlBuscarLetra(String urlBasico, Cancion cancion){
+      String artista= "";
+      for(int i=0; i<cancion.getArtistas().size(); i++){ 
+        String temp= cancion.getArtistas().get(i).getNombre().trim();
+        temp= temp.toLowerCase();
+        artista+=temp;  
+      }
+      String urlBuscar= urlBasico + "/" + artista + "/" + cancion.getNombre() + ".htlm";
+      return urlBuscar;    
+    }
+    
     public void obtenerLetra(String direccion, Cancion cancion) throws IOException{
-      URL url= new URL(direccion);
+      String direccionLetra= urlBuscarLetra(direccion, cancion);
+      URL url= new URL(direccionLetra);
       InputStream is= null;
       FileWriter fw= null;
       try{
@@ -175,10 +188,15 @@ public class Servicio {
         InputStreamReader reader= new InputStreamReader(is);
         BufferedReader bf= new BufferedReader(reader);
         fw= new FileWriter(new File(cancion.getNombre() + " Letra"));
+        BufferedWriter bw= new BufferedWriter(fw);
         String temp;
         while((temp= bf.readLine())!= null){
-            temp= bf.readLine();
-            fw.write(temp);
+          if(temp.contains("<!-- Usage of azlyrics.com content by any third-party lyrics provider is prohibited by our licensing agreement. Sorry about that. -->")){
+            while(!(temp= bf.readLine()).equals("</div>")){
+                temp= bf.readLine();
+                bw.write(temp);       
+            }
+          }     
         }
       } catch(IOException ex){
         System.out.println(ex.getMessage());       
