@@ -209,7 +209,7 @@ public class Servicio {
           if(temp.contains("<!-- Usage of azlyrics.com content by any third-party lyrics provider is prohibited by our licensing agreement. Sorry about that. -->")){
             while(!(temp= bf.readLine()).equals("<br><br>")){
                 if(!temp.equals("<br>")){    
-                    bw.write(temp);
+                    bw.write(temp.trim());
                     bw.newLine();
                     bw.flush();
                 }else{
@@ -253,7 +253,7 @@ public class Servicio {
           if(temp.contains("<div class=\"lyric-container\" style=\"min-height: 630px\">")){
             while(!((temp= bf.readLine()).contains("<div style=\"margin-top: 10px\">"))){
               if(!temp.equals("<br />")){    
-                bw.write(temp);
+                bw.write(temp.trim());
                 bw.newLine();
                 bw.flush();
               }else{
@@ -284,4 +284,5 @@ public class Servicio {
       }
       return c;
     }
+    
 }
