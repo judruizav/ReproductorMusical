@@ -165,6 +165,48 @@ public class Servicio {
         }    
     }
     
+    //Descripcion artista
+    public String urlBuscarArtista(String urlBasico, Artista artista){
+      String artistaBuscar=artista.getNombre().replace(" ", "-");
+      artistaBuscar= artistaBuscar.toLowerCase();
+      String urlBuscarArtista= urlBasico + "/" + artistaBuscar + "/biografia";
+      return urlBuscarArtista;
+    }
+    
+    public void obtenerReseña(String direccion, Artista artista) throws IOException{
+       String direccionBuscar= urlBuscarArtista(direccion, artista);
+       URL url= new URL(direccionBuscar);
+       FileWriter fw= null;
+       InputStream is= null;
+       try{
+         URLConnection urlConnection= url.openConnection();
+         is= urlConnection.getInputStream();
+         fw= new FileWriter(new File("Reseña " + artista.getNombre() + ".txt"));
+         InputStreamReader isr= new InputStreamReader(is);
+         BufferedReader bf= new BufferedReader(isr);
+         BufferedWriter bw= new BufferedWriter(fw);
+         String temp;
+         while((temp=bf.readLine())!= null){
+           if(temp.contains("biografia-texto")){
+              while(!(temp=bf.readLine()).equals("<br>")){
+                bw.write(temp.trim());
+                bw.newLine();
+                bw.flush();
+              }
+          }    
+         }
+       }catch(IOException ex){
+           System.out.println(ex.getMessage());
+       }finally{
+         if(is!=null){
+             is.close();
+         }
+         if(fw!=null){
+             fw.close();
+         }
+       }
+    }
+    
     //Letra cancion
     public String urlBuscarLetra(String urlBasico, Cancion cancion){
         String artista= "";
