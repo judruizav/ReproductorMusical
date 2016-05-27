@@ -169,7 +169,7 @@ public class Servicio {
     public String urlBuscarLetra(String urlBasico, Cancion cancion){
       String artista= "";
       for(int i=0; i<cancion.getArtistas().size(); i++){ 
-        String temp= cancion.getArtistas().get(i).getNombre().trim();
+        String temp= cancion.getArtistas().get(i).getNombre().replace(" ", "");
         temp= temp.toLowerCase();
         artista+=temp;  
       }
@@ -178,9 +178,17 @@ public class Servicio {
     }
     
     public String urlBuscarLetraTraducida(String urlBasico, Cancion cancion){
-        String urlBuscarLetra= urlBasico;
+        String artista= "";    
+        for(int i=0; i<cancion.getArtistas().size(); i++){
+          String temp= cancion.getArtistas().get(i).getNombre();
+          temp = temp.replace(" ", "-");
+          artista+=(temp+"-");
+        }
+        String nombreCancion= cancion.getNombre().replace(" ", "-");
+        String urlBuscarLetra= urlBasico + "/" + artista + "/" + nombreCancion;
         return urlBuscarLetra;
     }
+    
     public void escribirLetra(String direccion, Cancion cancion) throws IOException{
       String direccionLetra= urlBuscarLetra(direccion, cancion);
       URL url= new URL(direccionLetra);
@@ -225,10 +233,50 @@ public class Servicio {
       cancion.setLetra(cancion.getNombre() + " Letra");
     }
     
-    public void escribirLetraTraducida(String direccion, Cancion cancion){
-          
+    public void escribirLetraTraducida(String direccion, Cancion cancion) throws IOException{
+      String direccionBuscar= urlBuscarLetraTraducida(direccion, cancion);
+      URL url= new URL(direccionBuscar);
+      InputStream is= null;
+      FileWriter fw= null;
+      try{
+        URLConnection openConnection= url.openConnection();
+        is= openConnection.getInputStream();
+        InputStreamReader reader= new InputStreamReader(is);
+        BufferedReader bf= new BufferedReader(reader);
+        fw= new FileWriter(new File(cancion.getNombre() + " Letra traducida.txt"));
+        BufferedWriter bw= new BufferedWriter(fw);
+        String temp;
+        bw.write(cancion.getNombre().toUpperCase());
+        bw.flush();
+        bw.newLine();
+        while((temp= bf.readLine())!=null){
+          if(temp.contains("<div class=\"lyric-container\" style=\"min-height: 630px\">")){
+            while(!((temp= bf.readLine()).contains("<div style=\"margin-top: 10px\">"))){
+              if(!temp.equals("<br />")){    
+                bw.write(temp);
+                bw.newLine();
+                bw.flush();
+              }else{
+                bw.newLine();
+              }
+            }  
+          }    
+        }
+        bw.write("Letra tomada de " + direccionBuscar);
+        bw.newLine();
+        bw.flush();
+      }catch (IOException ex){
+        System.out.println(ex.getMessage());
+      }
+      cancion.setLetraTraduc(cancion.getNombre() + " Letra traducida.txt");
     }
     public void obtenerLetra(Cancion cancion){
         //@TODO poner en text pane interfaz
+    }
+    
+    //Recomendar canciones
+    public int contarGeneros(){
+      int a=0;
+      return a;
     }
 }
