@@ -230,7 +230,7 @@ public class Servicio {
         if(fw!= null){
             fw.close();
         }
-        cancion.setLetra(cancion.getNombre() + " Letra.txt");
+        cancion.setLetra(cancion.getNombre() + " Letra");
     }
     
     public void escribirLetraTraducida(String direccion, Cancion cancion) throws IOException{
@@ -284,6 +284,14 @@ public class Servicio {
             }      
         }
         return c;
+    }
+    
+    public ArrayList<Genero> generos(ArrayList<Cancion> canciones){
+        ArrayList<Genero> generos = new ArrayList<Genero>();
+        for(int i=0;i<canciones.size();i++){
+            generos.add(canciones.get(i).getGenero());
+        }
+        return generos;
     }
     
     public ArrayList<Genero> generos(ArrayList<Cancion> canciones){
