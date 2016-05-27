@@ -21,12 +21,10 @@ public class Test {
         array[2]= "No hay conexion a internet";
         String artista="";
         for(int i=0; i<3 ; i++){
-          String temp= array[i].replace(" ", "");
-          temp= temp.toLowerCase();
-          artista+=(temp);
+            String temp= array[i].replace(" ", "");
+            temp= temp.toLowerCase();
+            artista+=(temp);
         }
         System.out.println(artista);
-        
     }
-    
 }

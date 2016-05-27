@@ -17,72 +17,101 @@ public class Cancion {
     private ArrayList<Artista> artistas;
     private Album album;
     private String año;
-    private String genero;
+    private Genero genero;
     private int bpm;
     private String letra;
     private String letraTraduc;
     private ArrayList<Playlist> playlists;
 
-    public Cancion(String nombreArchivo, String nombre, ArrayList<Artista> artistas, Album album, ArrayList<Playlist> playlists) {
+    public Cancion(String nombreArchivo, String nombre, Genero genero, ArrayList<Artista> artistas, Album album, ArrayList<Playlist> playlists) {
         this.nombreArchivo = nombreArchivo;
         this.nombre = nombre;
+        this.genero = genero;
         this.artistas = artistas;
         this.album = album;
         this.playlists = playlists;
-        this.genero = this.album.getGenero();
+        this.genero = genero;
         this.año= this.album.getAño();
         
-    }
-    
-    public void setBpm(int bpm){
-      this.bpm = bpm;   
-    }
-
-    public void setLetra(String letra) {
-        this.letra = letra;
-    }
-
-    public void setLetraTraduc(String letraTraduc) {
-        this.letraTraduc = letraTraduc;
     }
 
     public String getNombreArchivo() {
         return nombreArchivo;
     }
 
+    public void setNombreArchivo(String nombreArchivo) {
+        this.nombreArchivo = nombreArchivo;
+    }
+
     public String getNombre() {
         return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public ArrayList<Artista> getArtistas() {
         return artistas;
     }
 
+    public void setArtistas(ArrayList<Artista> artistas) {
+        this.artistas = artistas;
+    }
+
     public Album getAlbum() {
         return album;
+    }
+
+    public void setAlbum(Album album) {
+        this.album = album;
     }
 
     public String getAño() {
         return año;
     }
 
-    public String getGenero() {
+    public void setAño(String año) {
+        this.año = año;
+    }
+
+    public Genero getGenero() {
         return genero;
     }
 
-    public int getBmp() {
+    public void setGenero(Genero genero) {
+        this.genero = genero;
+    }
+
+    public int getBpm() {
         return bpm;
+    }
+
+    public void setBpm(int bpm) {
+        this.bpm = bpm;
     }
 
     public String getLetra() {
         return letra;
     }
 
+    public void setLetra(String letra) {
+        this.letra = letra;
+    }
+
     public String getLetraTraduc() {
         return letraTraduc;
     }
 
+    public void setLetraTraduc(String letraTraduc) {
+        this.letraTraduc = letraTraduc;
+    }
+
     public ArrayList<Playlist> getPlaylists() {
         return playlists;
-    }   
+    }
+
+    public void setPlaylists(ArrayList<Playlist> playlists) {
+        this.playlists = playlists;
+    }
 }

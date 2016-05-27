@@ -33,6 +33,4 @@ public class Playlist {
     public Usuario getUsuario() {
         return usuario;
     }
-  
-    
 }

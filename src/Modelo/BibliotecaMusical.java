@@ -32,9 +32,5 @@ public class BibliotecaMusical {
 
     public ArrayList<Playlist> getPlaylists() {
         return playlists;
-    }
-    
-    
-    
-    
+    }    
 }
