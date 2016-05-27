@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class Album {
     private String nombre;
-    private String genero;
+    private Genero genero;
     private String año;
     private String imagenArchiv;
     private ArrayList<Cancion> canciones;
@@ -21,15 +21,16 @@ public class Album {
     private ArrayList<Usuario> usuarios;
     private ArrayList<BibliotecaMusical> bibliotecas;
 
-    public Album(String nombre, ArrayList<Artista> artistas, ArrayList<Usuario> usuarios, ArrayList<BibliotecaMusical> bibliotecas) {
+    public Album(String nombre, Genero genero, ArrayList<Artista> artistas, ArrayList<Usuario> usuarios, ArrayList<BibliotecaMusical> bibliotecas) {
         this.nombre = nombre;
+        this.genero = genero;
         this.artistas = artistas;
         this.usuarios = usuarios;
         this.bibliotecas = bibliotecas;
         this.canciones= new ArrayList<Cancion>();    
     }
 
-    public void setGenero(String genero) {
+    public void setGenero(Genero genero) {
         this.genero = genero;
     }
 
@@ -45,7 +46,7 @@ public class Album {
         return nombre;
     }
 
-    public String getGenero() {
+    public Genero getGenero() {
         return genero;
     }
 
@@ -72,12 +73,4 @@ public class Album {
     public ArrayList<BibliotecaMusical> getBibliotecas() {
         return bibliotecas;
     }
-    
-    
-    
-    
-    
-    
-    
-    
 }

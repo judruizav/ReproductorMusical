@@ -34,6 +34,4 @@ public class ReproductorMusical {
     public ArrayList<Album> getAlbumes() {
         return albumes;
     }
-    
-    
 }

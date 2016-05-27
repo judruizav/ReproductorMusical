@@ -60,8 +60,4 @@ public class Usuario {
     public BibliotecaMusical getBiblioteca() {
         return biblioteca;
     }
-    
-    
-  
-  
 }
