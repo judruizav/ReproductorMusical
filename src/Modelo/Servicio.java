@@ -177,6 +177,10 @@ public class Servicio {
       return urlBuscar;    
     }
     
+    public String urlBuscarLetraTraducida(String urlBasico, Cancion cancion){
+        String urlBuscarLetra= urlBasico;
+        return urlBuscarLetra;
+    }
     public void escribirLetra(String direccion, Cancion cancion) throws IOException{
       String direccionLetra= urlBuscarLetra(direccion, cancion);
       URL url= new URL(direccionLetra);
@@ -221,7 +225,10 @@ public class Servicio {
       cancion.setLetra(cancion.getNombre() + " Letra");
     }
     
+    public void escribirLetraTraducida(String direccion, Cancion cancion){
+          
+    }
     public void obtenerLetra(Cancion cancion){
-        
+        //@TODO poner en text pane interfaz
     }
 }
