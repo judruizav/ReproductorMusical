@@ -275,8 +275,13 @@ public class Servicio {
     }
     
     //Recomendar canciones
-    public int contarGeneros(){
-      int a=0;
-      return a;
+    public int contarGeneros(String genero, ArrayList<Cancion> canciones){
+      int c=0;
+      for(int i=0; i<canciones.size(); i++){
+        if(canciones.get(i).getGenero().equals(genero)){
+          c++;    
+        }      
+      }
+      return c;
     }
 }
