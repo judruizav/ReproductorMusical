@@ -181,20 +181,24 @@ public class Servicio {
        try{
          URLConnection urlConnection= url.openConnection();
          is= urlConnection.getInputStream();
-         fw= new FileWriter(new File("Reseña " + artista.getNombre() + ".txt"));
+         fw= new FileWriter(new File("Reseña" + artista.getNombre() + ".txt"));
          InputStreamReader isr= new InputStreamReader(is);
          BufferedReader bf= new BufferedReader(isr);
          BufferedWriter bw= new BufferedWriter(fw);
          String temp;
+         bw.write(artista.getNombre().toUpperCase());
+         bw.newLine();
+         bw.flush();
          while((temp=bf.readLine())!= null){
            if(temp.contains("biografia-texto")){
-              while(!(temp=bf.readLine()).equals("<br>")){
+              while(!(temp=bf.readLine()).equals("<br>")&&!temp.contains("margin-top:20px'")){
                 bw.write(temp.trim());
                 bw.newLine();
                 bw.flush();
               }
           }    
          }
+         bw.write("Reseña tomada de " + direccionBuscar);
        }catch(IOException ex){
            System.out.println(ex.getMessage());
        }finally{
@@ -205,6 +209,7 @@ public class Servicio {
              fw.close();
          }
        }
+       artista.setReseña("Reseña" + artista.getNombre() + ".txt");
     }
     
     //Letra cancion
@@ -241,7 +246,7 @@ public class Servicio {
             is= openConnection.getInputStream();
             InputStreamReader reader= new InputStreamReader(is);
             BufferedReader bf= new BufferedReader(reader);
-            fw= new FileWriter(new File(cancion.getNombre() + " Letra"));
+            fw= new FileWriter(new File(cancion.getNombre() + "Letra.txt"));
             BufferedWriter bw= new BufferedWriter(fw);
             String temp;
             bw.write(cancion.getNombre().toUpperCase());
@@ -272,7 +277,7 @@ public class Servicio {
         if(fw!= null){
             fw.close();
         }
-        cancion.setLetra(cancion.getNombre() + " Letra.txt");
+        cancion.setLetra(cancion.getNombre() + "Letra.txt");
     }
     
     public void escribirLetraTraducida(String direccion, Cancion cancion) throws IOException{
@@ -285,7 +290,7 @@ public class Servicio {
             is= openConnection.getInputStream();
             InputStreamReader reader= new InputStreamReader(is);
             BufferedReader bf= new BufferedReader(reader);
-            fw= new FileWriter(new File(cancion.getNombre() + " Letra traducida.txt"));
+            fw= new FileWriter(new File(cancion.getNombre() + "Letra traducida.txt"));
             BufferedWriter bw= new BufferedWriter(fw);
             String temp;
             bw.write(cancion.getNombre().toUpperCase());
@@ -310,7 +315,7 @@ public class Servicio {
         }catch (IOException ex){
             System.out.println(ex.getMessage());
         }
-        cancion.setLetraTraduc(cancion.getNombre() + " Letra traducida.txt");
+        cancion.setLetraTraduc(cancion.getNombre() + "Letra traducida.txt");
     }
     
     public void obtenerLetra(Cancion cancion){
