@@ -9,31 +9,40 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Julian
+ * @author Sebastian
  */
-public class Artista {
+
+public class Genero {
+    
     private String nombre;
-    private String reseña;
+    private ArrayList<Cancion> canciones;
     private ArrayList<Album> albumes;
 
-    public Artista(String nombre) {
+    public Genero(String nombre) {
         this.nombre = nombre;
-        this.albumes = new ArrayList<Album>();
-    }
-
-    public void setReseña(String reseña) {
-        this.reseña = reseña;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public String getReseña() {
-        return reseña;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public ArrayList<Cancion> getCanciones() {
+        return canciones;
+    }
+
+    public void setCanciones(ArrayList<Cancion> canciones) {
+        this.canciones = canciones;
     }
 
     public ArrayList<Album> getAlbumes() {
         return albumes;
+    }
+
+    public void setAlbumes(ArrayList<Album> albumes) {
+        this.albumes = albumes;
     }
 }
