@@ -120,51 +120,50 @@ public class Servicio {
         }
     }
     
-    //URL cliente-servidor
+ //URL cliente-servidor
+    //Completar info album
+    public String urlInfoAlbum(String urlBasico, Album album){
+      String artistas="";
+      for(int i=0; i<album.getArtistas().size(); i++){
+        String temp= album.getArtistas().get(i).getNombre().toLowerCase();
+        artistas+=temp.replace(" ", "-");
+      }
+      String albumBuscar= urlBasico + "/discografia-" + artistas + "/discography-" + artistas + ".html";
+      return albumBuscar;     
+    }
+    
     public void completarInfoAlbum(String direccion, Album album) throws IOException{
-        URL url= new URL(direccion);
-        InputStream is= null;
-        try{
-            URLConnection openConnection= url.openConnection();
-            is= openConnection.getInputStream();
-            InputStreamReader reader= new InputStreamReader(is);
-            BufferedReader bf= new BufferedReader(reader);
-            String temp;
-            while((temp= bf.readLine())!= null){
-                if(temp.contains("Genero")){
-                 
+      String direccionBuscarAlbum= urlInfoAlbum(direccion,album);
+      URL url= new URL(direccionBuscarAlbum);
+      InputStream is= null;
+      try{
+        URLConnection urlConnection= url.openConnection();
+        is= urlConnection.getInputStream();
+        InputStreamReader isr= new InputStreamReader(is);
+        BufferedReader bf= new BufferedReader(isr);
+        String temp;
+        String[] nombreAlbum= album.getNombre().split(" ");
+        while((temp=bf.readLine())!=null){
+            if(temp.contains(nombreAlbum[0])&&temp.contains(nombreAlbum[1])){
+                if((temp= bf.readLine()).contains("</p>")&&!temp.contains("A&ntilde")){
+                String[] tempArray= temp.split("-");
+                String año= tempArray[1].trim();
+                String[] generoArray= tempArray[2].trim().split("<");
+                String genero= generoArray[0].trim();
+                album.setAño(año);
+                Genero generoAlbum= new Genero(genero);
+                album.setGenero(generoAlbum);
                 }
             }
-        }catch(IOException ex){
-            System.out.println(ex.getMessage());       
         }
+      }catch(IOException ex){
+          System.out.println(ex.getMessage());
+      }finally{
         if(is!=null){
-            is.close();
-        }
-    }
-    
-    public void completarInfoCancion(String direccion, Cancion cancion) throws IOException{
-        URL url= new URL(direccion);
-        InputStream is= null;
-        try{
-            URLConnection openConnection= url.openConnection();
-            is= openConnection.getInputStream();
-            InputStreamReader reader= new InputStreamReader(is);
-            BufferedReader bf= new BufferedReader(reader);
-            String temp;
-            while((temp= bf.readLine())!= null){
-                if(temp.contains("Genero")){
-                 
-                }
-            }
-        }catch(IOException ex){
-            System.out.println(ex.getMessage());       
-        }
-        if(is!=null){
-            is.close();
+          is.close();
         }    
+      }
     }
-    
     //Descripcion artista
     public String urlBuscarArtista(String urlBasico, Artista artista){
       String artistaBuscar=artista.getNombre().replace(" ", "-");
