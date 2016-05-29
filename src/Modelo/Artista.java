@@ -15,6 +15,7 @@ public class Artista {
     private String nombre;
     private String reseña;
     private ArrayList<Album> albumes;
+    private int numeroCanciones;
 
     public Artista(String nombre) {
         this.nombre = nombre;
@@ -35,5 +36,13 @@ public class Artista {
 
     public ArrayList<Album> getAlbumes() {
         return albumes;
+    }
+    
+    public int GetNumCancionesAlbum(){
+        int numeroCanciones=0;
+        for(int i=0; i<this.albumes.size(); i++){
+            numeroCanciones += this.albumes.get(i).getCanciones().size();
+        }
+        return numeroCanciones;
     }
 }

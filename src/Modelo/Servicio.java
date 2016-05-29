@@ -11,6 +11,8 @@ import Modelo.exception.UsuarioException;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -523,6 +525,17 @@ public class Servicio {
         }
         return generos;
     }
+    
+    //Ordenar Generos por num de canciones
+    public ArrayList<Genero> generoFavorito(ArrayList<Genero> generos){
+        Collections.sort(generos, new Comparator<Genero>() {
+            @Override
+            public int compare(Genero g1, Genero g2) {
+                return new Integer(g2.getNumCanciones()).compareTo(new Integer(g1.getNumCanciones()));   
+            }
+        });
+        return generos;
+    }
  
     public String urlBuscarGenero(String urlBasico,Genero genero){
       String nombreGenero= genero.getNombre().replace(" ", "-").toLowerCase();
@@ -606,4 +619,14 @@ public class Servicio {
       return cancionesRecomendadasPorGenero;
     }
     
+    //Ordenar Artistas por num de canciones
+    public ArrayList<Artista> ArtistaFavorito(ArrayList<Artista> artistas){
+        Collections.sort(artistas, new Comparator<Artista>() {
+            @Override
+            public int compare(Artista a1, Artista a2) {
+                return new Integer(a2.GetNumCancionesAlbum()).compareTo(new Integer(a1.GetNumCancionesAlbum()));   
+            }
+        });
+        return artistas;
+    }
 }

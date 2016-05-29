@@ -7,6 +7,8 @@ package Modelo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  *
@@ -17,8 +19,19 @@ public class Test {
     /**
      * @param args the command line arguments
      */
+        
+    public static ArrayList<Integer> numerosOrdenado(ArrayList<Integer> numeros){
+        Collections.sort(numeros, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer g1, Integer g2) {
+                return new Integer(g2).compareTo(new Integer(g1));   
+            }
+        });
+        return numeros;
+    }
+    
     public static void main(String[] args) {
-        ArrayList<Integer> array= new ArrayList<Integer>();
+        /*ArrayList<Integer> array= new ArrayList<Integer>();
         array.add(12);
         array.add(14);
         array.add(2);
@@ -37,6 +50,18 @@ public class Test {
                 }
             }
         }
-        System.out.println(array.isEmpty());
+        System.out.println(array.isEmpty());+*/
+           
+        ArrayList<Integer> numeros = new ArrayList<Integer>();
+        numeros.add(1);
+        numeros.add(5);
+        numeros.add(7);
+        numeros.add(3);
+        numeros.add(6);
+        
+        numerosOrdenado(numeros);
+        for(int i=0; i<numeros.size(); i++){
+            System.out.println(numeros.get(i));
+        }
     }
 }
