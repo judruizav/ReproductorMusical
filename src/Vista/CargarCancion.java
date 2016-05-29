@@ -16,6 +16,7 @@ public class CargarCancion extends javax.swing.JFrame {
      */
     public CargarCancion() {
         initComponents();
+        
     }
 
     /**
@@ -47,7 +48,7 @@ public class CargarCancion extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setPreferredSize(new java.awt.Dimension(450, 200));
+        setPreferredSize(new java.awt.Dimension(450, 250));
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${size}"), this, org.jdesktop.beansbinding.BeanProperty.create("size"));
         bindingGroup.addBinding(binding);
