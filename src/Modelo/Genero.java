@@ -15,12 +15,21 @@ import java.util.ArrayList;
 public class Genero {
     
     private String nombre;
+    private int numCanciones;
     private ArrayList<Cancion> canciones;
-    private ArrayList<Album> albumes;
+    private ArrayList<Album> albumes; 
 
-    public Genero(String nombre) {
+    public Genero(String nombre, ArrayList<Cancion> canciones, ArrayList<Album> albumes) {
         this.nombre = nombre;
+        this.canciones = canciones;
+        this.albumes = albumes;
     }
+
+    public int getNumCanciones() {
+        return numCanciones;
+    }
+
+    
 
     public String getNombre() {
         return nombre;
@@ -45,4 +54,10 @@ public class Genero {
     public void setAlbumes(ArrayList<Album> albumes) {
         this.albumes = albumes;
     }
+    
+    public void setNumCanciones(){
+        this.numCanciones=this.canciones.size();
+    }
+    
+    
 }

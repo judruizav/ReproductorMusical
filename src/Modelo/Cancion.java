@@ -30,9 +30,14 @@ public class Cancion {
         this.artistas = artistas;
         this.album = album;
         this.playlists = playlists;
-        this.genero = genero;
+        this.genero = this.album.getGenero();
         this.año= this.album.getAño();
         
+    }
+    
+    public Cancion(String nombre, ArrayList<Artista> artistas, Artista artista){
+      this.nombre= nombre;
+      artistas.add(artista);
     }
 
     public String getNombreArchivo() {
@@ -81,6 +86,7 @@ public class Cancion {
 
     public void setGenero(Genero genero) {
         this.genero = genero;
+        genero.getCanciones().add(this);
     }
 
     public int getBpm() {

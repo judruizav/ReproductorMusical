@@ -21,9 +21,8 @@ public class Album {
     private ArrayList<Usuario> usuarios;
     private ArrayList<BibliotecaMusical> bibliotecas;
 
-    public Album(String nombre, Genero genero, ArrayList<Artista> artistas, ArrayList<Usuario> usuarios, ArrayList<BibliotecaMusical> bibliotecas) {
+    public Album(String nombre, ArrayList<Artista> artistas, ArrayList<Usuario> usuarios, ArrayList<BibliotecaMusical> bibliotecas) {
         this.nombre = nombre;
-        this.genero = genero;
         this.artistas = artistas;
         this.usuarios = usuarios;
         this.bibliotecas = bibliotecas;

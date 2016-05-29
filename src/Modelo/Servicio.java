@@ -11,6 +11,8 @@ import Modelo.exception.UsuarioException;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -69,15 +71,38 @@ public class Servicio {
         return playlistEncontrada;
     }
     
-    public void cargarAlbum(String nombreAlbum, Genero genero) throws FileNotFoundException{
+    public Genero cargarGenero(String nombre){
+      ArrayList<Cancion> canciones= new ArrayList<Cancion>();
+      ArrayList<Album> albumes= new ArrayList<Album>();
+      Genero genero= new Genero(nombre, canciones, albumes);
+      return genero;
+    }
+    
+    public void cargarAlbum(String nombreAlbum){
         ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
         ArrayList<BibliotecaMusical> bibliotecas = new ArrayList<BibliotecaMusical>();    
         ArrayList<Artista> artistas= new ArrayList<Artista>();
-        Album album = new Album(nombreAlbum, genero, artistas, usuarios, bibliotecas);
+        Album album = new Album(nombreAlbum, artistas, usuarios, bibliotecas);
+        try {
+            completarInfoAlbum("https://www.quedeletras.com", album);
+        } catch (IOException ex) {
+            Logger.getLogger(Servicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.reproductorMusical.getAlbumes().add(album);
     }
     
-    public void cargarCancion(String nombreArchiv, String nombre, Genero genero, ArrayList<String> nombresArtista, String nombreAlbum) throws BuscarException, FileNotFoundException{
+    public void cargarAlbumGenero(String nombreAlbum, String nombreGenero) throws FileNotFoundException{
+        ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+        ArrayList<BibliotecaMusical> bibliotecas = new ArrayList<BibliotecaMusical>();    
+        ArrayList<Artista> artistas= new ArrayList<Artista>();
+        Album album = new Album(nombreAlbum, artistas, usuarios, bibliotecas);
+        Genero genero= cargarGenero(nombreGenero);
+        album.setGenero(genero);
+        this.reproductorMusical.getAlbumes().add(album);
+    }
+    
+    
+    public void cargarCancion(String nombreArchiv, String nombre, ArrayList<String> nombresArtista, String nombreAlbum) throws BuscarException, FileNotFoundException{
         ArrayList<Playlist> playlists= new ArrayList<Playlist>();
         ArrayList<Artista> artistas= new ArrayList<Artista>();
         Album album= buscarAlbum(nombreAlbum); 
@@ -86,9 +111,18 @@ public class Servicio {
             artistas.add(artista);
         }
         if(album==null){
-            cargarAlbum(nombreAlbum, genero);
+            cargarAlbum(nombreAlbum);
+            album= buscarAlbum(nombreAlbum);   
         }
-        Cancion cancion= new Cancion(nombreArchiv, nombre, genero, artistas, album, playlists);
+        Cancion cancion= new Cancion(nombreArchiv, nombre, album.getGenero(), artistas, album, playlists);
+        try {
+            escribirLetra("http://www.azlyrics.com", cancion);
+            obtenerBpmCancion("https://songbpm.com",cancion);
+        } catch (IOException ex) {
+            Logger.getLogger(Servicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        album.getGenero().getCanciones().add(cancion);
+        album.getGenero().setNumCanciones();
         album.getCanciones().add(cancion);
     }
     
@@ -151,7 +185,7 @@ public class Servicio {
                 String[] generoArray= tempArray[2].trim().split("<");
                 String genero= generoArray[0].trim();
                 album.setAño(año);
-                Genero generoAlbum= new Genero(genero);
+                Genero generoAlbum= cargarGenero(genero);
                 album.setGenero(generoAlbum);
                 }
             }
@@ -163,6 +197,53 @@ public class Servicio {
           is.close();
         }    
       }
+    }
+    //Obtener bpm cancion
+    public String urlBuscarCancion(String urlBasico, Cancion cancion){
+      String artistas="";
+      for(int i=0; i<cancion.getArtistas().size(); i++){
+        String temp= cancion.getArtistas().get(i).getNombre().replace(" ", "+").toLowerCase();
+        artistas+=temp;
+      }
+      String nombreCancion= cancion.getNombre().replace(" ", "+").toLowerCase();
+      String urlBuscarCancion= urlBasico + "/" + artistas + "/" + nombreCancion;
+      return urlBuscarCancion;
+    }
+    
+    public void obtenerBpmCancion(String direccion, Cancion cancion) throws IOException{
+      String direccionBuscar= urlBuscarCancion(direccion, cancion);
+      InputStream is= null;
+      try{
+        URL url= new URL(direccionBuscar);
+        URLConnection openConnection = url.openConnection();
+        is= openConnection.getInputStream();
+        InputStreamReader reader= new InputStreamReader(is);
+        BufferedReader bf= new BufferedReader(reader);
+        String temp;
+        while((temp= bf.readLine())!= null){
+            try{
+            if(temp.contains("search-results")){
+                    while(!(temp=bf.readLine()).contains("BPM</div>")){
+                        if(temp.contains("</div>")){
+                            String[] tempArray= temp.split(">");
+                            String[] bpmArray= tempArray[1].split("<");
+                            String bpm= bpmArray[0];
+                            cancion.setBpm(Integer.parseInt(bpm));
+                        }
+                    }        
+            }
+            }catch(ArrayIndexOutOfBoundsException ex){
+                System.out.println("Cancion no encontrada D:");
+            }
+        }      
+      }catch(IOException ex){
+        System.out.println(ex.getMessage());
+      }finally{
+        if(is!=null){
+            is.close();
+        }    
+      }
+      
     }
     //Descripcion artista
     public String urlBuscarArtista(String urlBasico, Artista artista){
@@ -281,10 +362,10 @@ public class Servicio {
     
     public void escribirLetraTraducida(String direccion, Cancion cancion) throws IOException{
         String direccionBuscar= urlBuscarLetraTraducida(direccion, cancion);
-        URL url= new URL(direccionBuscar);
         InputStream is= null;
         FileWriter fw= null;
         try{
+            URL url= new URL(direccionBuscar);
             URLConnection openConnection= url.openConnection();
             is= openConnection.getInputStream();
             InputStreamReader reader= new InputStreamReader(is);
@@ -322,22 +403,73 @@ public class Servicio {
     }
     
     //Recomendar canciones
-    public int contarGeneros(String genero, ArrayList<Cancion> canciones){
-        int c=0;
-        for(int i=0; i<canciones.size(); i++){
-            if(canciones.get(i).getGenero().equals(genero)){
-                c++;    
-            }      
-        }
-        return c;
-    }
-    
-    public ArrayList<Genero> generos(ArrayList<Cancion> canciones){
+    public ArrayList<Genero> obtenerGeneros(ArrayList<Cancion> canciones){
         ArrayList<Genero> generos = new ArrayList<Genero>();
         for(int i=0;i<canciones.size();i++){
-            generos.add(canciones.get(i).getGenero());
+            if(!generos.contains(canciones.get(i).getGenero())){
+              generos.add(canciones.get(i).getGenero());    
+            }
         }
         return generos;
+    }
+    
+    /*public ArrayList<Genero> organizarGeneros(ArrayList<Genero> generos){
+      for(int i=0; i<(generos.size()-1); i++){
+        for(int j=i+1; i<generos.size(); i++){
+            if(generos.get(i).getNumCanciones()<generos.get(j).getNumCanciones()){
+              Genero temp= generos.get(i);
+              generos.remove(i);
+              generos.add(i, generos.get(j));
+              generos.add(j, temp);
+            }
+        }      
+      }
+      return generos;
+    }*/
+ 
+    public String urlBuscarGenero(String urlBasico,Genero genero){
+      String nombreGenero= genero.getNombre().replace(" ", "-").toLowerCase();
+      String urlBuscarGenero= urlBasico+ "/"+ nombreGenero + "/";
+      return urlBuscarGenero;
+    }
+    
+    public Cancion cargarCancionRecomendada(String nombre, String nombreArtista){
+      ArrayList<Artista> artistas= new ArrayList<Artista>();
+      Artista artista= new Artista(nombreArtista);
+      Cancion cancion= new Cancion(nombre,artistas, artista);
+      return cancion;    
+    }
+    
+    public ArrayList<Cancion> obtenerCancionesRecomendadas(String direccion, Genero genero) throws IOException{
+      String direccionBuscarGenero= urlBuscarGenero(direccion, genero);
+      ArrayList<Cancion> cancionesRecomendadas= new ArrayList<Cancion>();
+      InputStream is= null;
+      try{
+        URL url= new URL(direccionBuscarGenero);
+        URLConnection openConnection = url.openConnection();    
+        is= openConnection.getInputStream();
+        InputStreamReader reader= new InputStreamReader(is);
+        BufferedReader bf= new BufferedReader(reader);
+        String temp;
+        while((temp= bf.readLine())!= null){
+          if(temp.contains("><a href=")&&temp.contains("song")){  
+          String[] tempArray= temp.split("><a href=");
+          String[] infoArray= tempArray[1].split("itemprop");
+          if(infoArray[0].contains("cancion")){
+            String[] cancionArray= infoArray[0].split("/");
+            Cancion cancionRecomendada= cargarCancionRecomendada(cancionArray[4].replace("-", " "), cancionArray[2].replace("-", " "));
+            cancionesRecomendadas.add(cancionRecomendada);
+          }
+          }
+        }
+      }catch(IOException ex){
+          System.out.println(ex.getMessage());
+      }finally{
+        if(is!=null){
+          is.close();
+        }    
+      }
+      return cancionesRecomendadas;
     }
     
 }
