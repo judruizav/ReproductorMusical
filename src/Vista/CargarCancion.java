@@ -16,7 +16,7 @@ public class CargarCancion extends javax.swing.JFrame {
      */
     public CargarCancion() {
         initComponents();
-        
+        setResizable(false);
     }
 
     /**
@@ -46,7 +46,7 @@ public class CargarCancion extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setPreferredSize(new java.awt.Dimension(450, 250));
 

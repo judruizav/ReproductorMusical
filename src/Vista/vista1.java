@@ -574,8 +574,9 @@ public class vista1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jList1KeyPressed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        login obj= new login();
+        Login obj= new Login();
         obj.setVisible(true);
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
