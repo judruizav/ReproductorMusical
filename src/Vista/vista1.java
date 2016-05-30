@@ -42,11 +42,11 @@ public class vista1 extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<String>();
+        jList1 = new javax.swing.JList<>();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<String>();
+        jList2 = new javax.swing.JList<>();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jList3 = new javax.swing.JList<String>();
+        jList3 = new javax.swing.JList<>();
         jScrollBar2 = new javax.swing.JScrollBar();
         jLabel4 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -155,10 +155,10 @@ public class vista1 extends javax.swing.JFrame {
 
         jTabbedPane2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Song 1", "Song 2", "Song 3", "Song ...", "Song n" };
             public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
+            public String getElementAt(int i) { return strings[i]; }
         });
         jList1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -167,17 +167,17 @@ public class vista1 extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(jList1);
 
-        jList2.setModel(new javax.swing.AbstractListModel() {
+        jList2.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Artist 1", "Artist 2", "Artist 3", "Artist ...", "Artist n" };
             public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
+            public String getElementAt(int i) { return strings[i]; }
         });
         jScrollPane3.setViewportView(jList2);
 
-        jList3.setModel(new javax.swing.AbstractListModel() {
+        jList3.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Album 1", "Album 2", "Album 3", "Album ...", "Album n" };
             public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
+            public String getElementAt(int i) { return strings[i]; }
         });
         jScrollPane4.setViewportView(jList3);
 
@@ -525,7 +525,8 @@ public class vista1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
+        CrearPlayList crearPlayList= new CrearPlayList();
+        crearPlayList.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
