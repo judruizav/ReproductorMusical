@@ -19,6 +19,7 @@ public class Usuario {
   private ArrayList<Album> albumes;
   private ArrayList<Playlist> playlists;
   private BibliotecaMusical biblioteca;
+  private boolean sesionIniciada;
 
     public Usuario(String nombreReal, String nombreDeUsuario, String correo, String contraseña, ArrayList<Album> albumes) {
         this.nombreReal = nombreReal;
@@ -27,7 +28,18 @@ public class Usuario {
         this.contraseña = contraseña;
         this.albumes = albumes;
         this.playlists = new ArrayList<Playlist>();
+        this.sesionIniciada=false;
     }
+
+    public boolean isSesionIniciada() {
+        return sesionIniciada;
+    }
+
+    public void setSesionIniciada(boolean sesionIniciada) {
+        this.sesionIniciada = sesionIniciada;
+    }
+    
+    
 
     public void setBiblioteca(BibliotecaMusical biblioteca) {
         this.biblioteca = biblioteca;
