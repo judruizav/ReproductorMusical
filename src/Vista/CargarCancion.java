@@ -55,15 +55,19 @@ public class CargarCancion extends javax.swing.JFrame {
 
         jLayeredPane1.setLayout(new java.awt.GridLayout(4, 1));
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Nombre de archivo:");
         jLayeredPane1.add(jLabel1);
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Cancion:");
         jLayeredPane1.add(jLabel2);
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Album:");
         jLayeredPane1.add(jLabel3);
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("Artista(s):");
         jLayeredPane1.add(jLabel4);
 
@@ -92,7 +96,7 @@ public class CargarCancion extends javax.swing.JFrame {
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/musicaIcono.png"))); // NOI18N
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Cargar canción");
 

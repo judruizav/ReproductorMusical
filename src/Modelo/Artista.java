@@ -38,11 +38,17 @@ public class Artista {
         return albumes;
     }
     
-    public int GetNumCancionesAlbum(){
+    public void setNumCancionesAlbum(){
         int numeroCanciones=0;
         for(int i=0; i<this.albumes.size(); i++){
             numeroCanciones += this.albumes.get(i).getCanciones().size();
         }
+        numeroCanciones= this.numeroCanciones;
+    }
+
+    public int getNumeroCanciones() {
         return numeroCanciones;
     }
+    
+    
 }

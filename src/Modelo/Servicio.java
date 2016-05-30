@@ -199,12 +199,22 @@ public class Servicio {
         }
     }
     
-    public void crearPlayList(String nombre, Usuario usuario) throws PlaylistException{
+    public void cargarPlayList(String nombre, Usuario usuario){
         ArrayList<Cancion> canciones= new ArrayList<Cancion>();
         Playlist playlist= new Playlist(nombre , canciones, usuario);
         usuario.getPlaylists().add(playlist);
-        if(buscarPlaylist(nombre,usuario)!=null){
-            throw new PlaylistException("El nombre de la Playlist ya existe");
+    }
+    
+    public void crearPlayList(String nombre, Usuario usuario, ArrayList<String> nombresCanciones) throws PlaylistException{
+        cargarPlayList(nombre,usuario);
+        Playlist playlist= buscarPlaylist(nombre, usuario);
+        for(int i=0; i<nombresCanciones.size(); i++){
+            Cancion cancion= buscarCancion(nombresCanciones.get(i));
+            if(cancion==null){
+                throw new PlaylistException("La canción " + nombresCanciones.get(i) + " no existe");    
+            }else{
+                playlist.getCanciones().add(cancion);
+            } 
         }
     }
     
@@ -463,6 +473,17 @@ public class Servicio {
       return cancion;    
     }
     
+    //Ordenar artista
+    public ArrayList<Artista> ArtistaFavorito(ArrayList<Artista> artistas){
+        Collections.sort(artistas, new Comparator<Artista>() {
+            @Override
+            public int compare(Artista a1, Artista a2) {
+                return new Integer(a2.getNumeroCanciones()).compareTo(new Integer(a1.getNumeroCanciones()));   
+            }
+        });
+        return artistas;
+    }
+    
     //Recomendar canciones por artista
     public ArrayList<Artista> obtenerArtistas(ArrayList<Album> albumes){
       ArrayList<Artista> artistas= new ArrayList<Artista>();
@@ -619,14 +640,5 @@ public class Servicio {
       return cancionesRecomendadasPorGenero;
     }
     
-    //Ordenar Artistas por num de canciones
-    public ArrayList<Artista> ArtistaFavorito(ArrayList<Artista> artistas){
-        Collections.sort(artistas, new Comparator<Artista>() {
-            @Override
-            public int compare(Artista a1, Artista a2) {
-                return new Integer(a2.GetNumCancionesAlbum()).compareTo(new Integer(a1.GetNumCancionesAlbum()));   
-            }
-        });
-        return artistas;
-    }
+
 }
