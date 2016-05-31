@@ -5,7 +5,14 @@
  */
 package Modelo;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  *
@@ -22,8 +29,9 @@ public class Cancion {
     private String letra;
     private String letraTraduc;
     private ArrayList<Playlist> playlists;
+    private Clip pista;
 
-    public Cancion(String nombreArchivo, String nombre, Genero genero, ArrayList<Artista> artistas, Album album, ArrayList<Playlist> playlists) {
+    public Cancion(String nombreArchivo, String nombre, Genero genero, ArrayList<Artista> artistas, Album album, ArrayList<Playlist> playlists) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
         this.nombreArchivo = nombreArchivo;
         this.nombre = nombre;
         this.genero = genero;
@@ -32,6 +40,8 @@ public class Cancion {
         this.playlists = playlists;
         this.genero = this.album.getGenero();
         this.año= this.album.getAño();
+        this.pista= AudioSystem.getClip();
+        pista.open(AudioSystem.getAudioInputStream(new File(nombreArchivo)));
         
     }
     
@@ -43,6 +53,11 @@ public class Cancion {
     public String getNombreArchivo() {
         return nombreArchivo;
     }
+
+    public Clip getPista() {
+        return pista;
+    }
+    
 
     public void setNombreArchivo(String nombreArchivo) {
         this.nombreArchivo = nombreArchivo;

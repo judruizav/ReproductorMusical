@@ -13,6 +13,7 @@ import Modelo.Usuario;
 import Modelo.exception.UsuarioException;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Julian
@@ -20,27 +21,37 @@ import java.awt.event.MouseListener;
 public class ControladorIniciarSesion implements ActionListener{
     private IniciarSesioon iniciarSesionFrame;
     private Servicio servicio;
+    private Usuario usuario;
 
-    public ControladorIniciarSesion(IniciarSesioon iniciarSesionFrame, Servicio servicio) {
-        this.iniciarSesionFrame = iniciarSesionFrame;
+    public ControladorIniciarSesion(Servicio servicio) {
         this.servicio = servicio;
-        
+        this.iniciarSesionFrame= new IniciarSesioon();
+        this.iniciarSesionFrame.getjButton1().addActionListener(this); 
     }
 
-    
+    public void start(){
+        this.iniciarSesionFrame.setVisible(true);
+    }
      
     @Override
     public void actionPerformed(ActionEvent ae){
         String nombreUsuario= this.iniciarSesionFrame.getjTextField1().getText();
         String clave= this.iniciarSesionFrame.getjPasswordField1().getText();
-        Usuario usuarioIniciar= this.servicio.buscarUsuario(nombreUsuario);
-        if(usuarioIniciar!=null){
-          if(usuarioIniciar.getContraseña().equals(clave)){
-            usuarioIniciar.setSesionIniciada(true);
-          }
-        }  
+        String bandera= null;
+        try{        
+            Usuario usuarioIniciar= this.servicio.iniciarSesion(nombreUsuario, clave);
+            this.usuario= usuarioIniciar;
+        }catch(UsuarioException ex){
+          bandera= ex.getMessage();
+          JOptionPane.showMessageDialog(iniciarSesionFrame, bandera);
+        }
+        if(bandera==null){
+          JOptionPane.showMessageDialog(null, "Bienvenido(a) " + nombreUsuario);
+          this.iniciarSesionFrame.setVisible(false);
+        }
         
-    }
+    }  
+    
 
 
     

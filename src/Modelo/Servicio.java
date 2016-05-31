@@ -15,6 +15,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  *
@@ -121,7 +123,7 @@ public class Servicio {
       }    
     }
     
-    public void cargarCancion(String nombreArchiv, String nombre, ArrayList<String> nombresArtista, String nombreAlbum) throws BuscarException, FileNotFoundException{
+    public void cargarCancion(String nombreArchiv, String nombre, ArrayList<String> nombresArtista, String nombreAlbum) throws BuscarException, LineUnavailableException, IOException, UnsupportedAudioFileException{
         ArrayList<Playlist> playlists= new ArrayList<Playlist>();
         ArrayList<Artista> artistas= new ArrayList<Artista>();
         Album album= buscarAlbum(nombreAlbum);
@@ -138,6 +140,9 @@ public class Servicio {
             album= buscarAlbum(nombreAlbum);
             cargarArtistasAlbum(artistas, album);
         }
+        if((buscarCancion(nombre)!=null)||(buscarCancion(nombreArchiv)!=null)){
+          throw new BuscarException("La cancion " + nombre + "ya existe");    
+        }
         Cancion cancion= new Cancion(nombreArchiv, nombre, album.getGenero(), artistas, album, playlists);
         try {
             escribirLetra("http://www.azlyrics.com", cancion);
@@ -150,7 +155,7 @@ public class Servicio {
         album.getCanciones().add(cancion);
     }
     
-    public void cargarCancionUsuario(String nombreArchiv, String nombre, ArrayList<String> nombresArtista, String nombreAlbum, Usuario usuario){
+    public void cargarCancionUsuario(String nombreArchiv, String nombre, ArrayList<String> nombresArtista, String nombreAlbum, Usuario usuario) throws IOException, LineUnavailableException, UnsupportedAudioFileException{
         ArrayList<Playlist> playlists= new ArrayList<Playlist>();
         ArrayList<Artista> artistas= new ArrayList<Artista>();
         Album album= buscarAlbum(nombreAlbum);
@@ -183,20 +188,34 @@ public class Servicio {
     public void crearUsuario(String nombreReal, String nombreDeUsuario, String correo, String contraseña) throws UsuarioException{    
         ArrayList<Album> albumes= new ArrayList<Album>();
         Usuario usuario= new Usuario(nombreReal, nombreDeUsuario, correo, contraseña, albumes);
-        BibliotecaMusical biblioteca= new BibliotecaMusical(usuario);
-        usuario.setBiblioteca(biblioteca);
-        this.reproductorMusical.getUsuarios().add(usuario);
         if(!correo.contains("@")){
             throw new UsuarioException ("El formato del correo es incorrecto");
         }else{
             correo.split("@");
-            if(!correo.split("@")[1].contains(".co")){
+            if(!correo.split("@")[1].contains(".com")){
                 throw new UsuarioException ("El formato del correo es incorrecto");
             }
         }
         if(buscarUsuario(nombreDeUsuario)!=null){
             throw new UsuarioException("El nombre de usuario ya existe");
         }
+        BibliotecaMusical biblioteca= new BibliotecaMusical(usuario);
+        usuario.setBiblioteca(biblioteca);
+        this.reproductorMusical.getUsuarios().add(usuario);
+    }
+    
+    public Usuario iniciarSesion(String nombreUsuario, String clave) throws UsuarioException{
+      Usuario usuarioIniciar= buscarUsuario(nombreUsuario);
+      if(usuarioIniciar!=null){
+           if(usuarioIniciar.getContraseña().equals(clave)){
+                usuarioIniciar.setSesionIniciada(true);
+           }else{
+                throw new UsuarioException("Contraseña incorrecta");
+           }
+      }else{
+        throw new UsuarioException("El usuario " + nombreUsuario + " no existe D:");    
+      }
+      return usuarioIniciar;
     }
     
     public void cargarPlayList(String nombre, Usuario usuario){
@@ -211,7 +230,7 @@ public class Servicio {
         for(int i=0; i<nombresCanciones.size(); i++){
             Cancion cancion= buscarCancion(nombresCanciones.get(i));
             if(cancion==null){
-                throw new PlaylistException("La canción " + nombresCanciones.get(i) + " no existe");    
+                throw new PlaylistException("La canción " + nombresCanciones.get(i) + " no existe D:");    
             }else{
                 playlist.getCanciones().add(cancion);
             } 

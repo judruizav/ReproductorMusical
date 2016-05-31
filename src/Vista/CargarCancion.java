@@ -5,6 +5,9 @@
  */
 package Vista;
 
+import javax.swing.JButton;
+import javax.swing.JTextField;
+
 /**
  *
  * @author Julian
@@ -17,6 +20,26 @@ public class CargarCancion extends javax.swing.JFrame {
     public CargarCancion() {
         initComponents();
         setResizable(false);
+    }
+
+    public JButton getjButton1() {
+        return jButton1;
+    }
+
+    public JTextField getjTextField1() {
+        return jTextField1;
+    }
+
+    public JTextField getjTextField2() {
+        return jTextField2;
+    }
+
+    public JTextField getjTextField3() {
+        return jTextField3;
+    }
+
+    public JTextField getjTextField4() {
+        return jTextField4;
     }
 
     /**
