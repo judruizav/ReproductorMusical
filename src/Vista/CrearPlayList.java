@@ -79,7 +79,7 @@ public class CrearPlayList extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Crear PlayList");
+        jLabel1.setText("Create PlayList");
         jLabel1.setToolTipText("");
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -89,10 +89,10 @@ public class CrearPlayList extends javax.swing.JFrame {
         });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel2.setText("Nombre de la PlayList:");
+        jLabel2.setText("PlayList name:");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel3.setText("Canciones:");
+        jLabel3.setText("Songs:");
 
         jButton1.setText("Aceptar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {

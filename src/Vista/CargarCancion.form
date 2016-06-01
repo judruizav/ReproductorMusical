@@ -49,7 +49,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="11" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Nombre de archivo:"/>
+            <Property name="text" type="java.lang.String" value="File name:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
@@ -57,7 +57,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="11" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Cancion:"/>
+            <Property name="text" type="java.lang.String" value="Song&apos;s name:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
@@ -73,7 +73,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="11" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Artista(s):"/>
+            <Property name="text" type="java.lang.String" value="Artist(s):"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -144,7 +144,7 @@
               <Font name="Tahoma" size="18" style="1"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Cargar canci&#xf3;n"/>
+            <Property name="text" type="java.lang.String" value="Load Song"/>
           </Properties>
         </Component>
       </SubComponents>

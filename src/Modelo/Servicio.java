@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -112,7 +113,7 @@ public class Servicio {
         try {
             completarInfoAlbum("https://www.quedeletras.com", album);
         } catch (IOException ex) {
-            Logger.getLogger(Servicio.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
         this.reproductorMusical.getAlbumes().add(album);
     }
@@ -263,13 +264,16 @@ public class Servicio {
         while((temp=bf.readLine())!=null){
             if(temp.contains(nombreAlbum[0])&&temp.contains(nombreAlbum[1])){
                 if((temp= bf.readLine()).contains("</p>")&&!temp.contains("A&ntilde")){
-                String[] tempArray= temp.split("-");
-                String año= tempArray[1].trim();
-                String[] generoArray= tempArray[2].trim().split("<");
-                String genero= generoArray[0].trim();
-                album.setAño(año);
-                Genero generoAlbum= cargarGenero(genero);
-                album.setGenero(generoAlbum);
+                    String[] tempArray= temp.split("-");
+                    if(tempArray.length==0){
+                        throw new NullPointerException("Album no encontrado");
+                    }
+                    String año= tempArray[1].trim();
+                    String[] generoArray= tempArray[2].trim().split("<");
+                    String genero= generoArray[0].trim();
+                    album.setAño(año);
+                    Genero generoAlbum= cargarGenero(genero);
+                    album.setGenero(generoAlbum);
                 }
             }
         }
@@ -362,6 +366,7 @@ public class Servicio {
           }    
          }
          bw.write("Reseña tomada de " + direccionBuscar);
+         bw.flush();
        }catch(IOException ex){
            System.out.println(ex.getMessage());
        }finally{
